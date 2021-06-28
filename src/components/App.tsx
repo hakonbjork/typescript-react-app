@@ -7,6 +7,8 @@ import NameEdit from "./NameEdit";
 const App = () => {
   const [name, setName] = useState("defaultUserName");
   const [editingName, setEditingName] = useState("defaultUserName");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const setUsernameState = () => {
     setName(editingName);
@@ -24,6 +26,17 @@ const App = () => {
     loadUsername();
   }, []);
 
+  const editingNameUpdateHandler = (newEditingName: string) => {
+    setEditingName(newEditingName);
+    if (!/\d/.test(newEditingName)) {
+      setErrorMessage(" Input must contain a number");
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+      setErrorMessage("");
+    }
+  };
+
   return (
     <div>
       <HelloComponent username={name} />
@@ -31,7 +44,9 @@ const App = () => {
         initialUsername={name}
         editingName={editingName}
         onNameUpdated={setUsernameState}
-        onEditingNameUpdated={setEditingName}
+        onEditingNameUpdated={editingNameUpdateHandler}
+        disabled={buttonDisabled}
+        errorMessage={errorMessage}
       />
     </div>
   );
