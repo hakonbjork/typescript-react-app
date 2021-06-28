@@ -6,14 +6,14 @@ import NameEdit from "./NameEdit";
 const App = () => {
   const [name, setName] = useState("defaultName");
 
-  const setUsernameState = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const setUsernameState = (newName: string) => {
+    setName(newName);
   };
 
   return (
     <div>
       <HelloComponent username={name} />
-      <NameEdit username={name} onChange={setUsernameState} />
+      <NameEdit initialUsername={name} onNameUpdated={setUsernameState} />
     </div>
   );
 };
