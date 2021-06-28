@@ -1,26 +1,25 @@
 import React from "react";
-import { useState } from "react";
 
 interface Props {
   initialUsername: string;
-  onNameUpdated: (newName: string) => any;
+  editingName: string;
+  onNameUpdated: () => any;
+  onEditingNameUpdated: (newEditingName: string) => any;
 }
 
 const NameEdit = (props: Props) => {
-  const [editingName, setEditingName] = useState(props.initialUsername);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditingName(e.target.value);
+    props.onEditingNameUpdated(e.target.value);
   };
 
-  const onNameSubmit = (event: any): any => {
-    props.onNameUpdated(editingName);
+  const onNameSubmit = (): any => {
+    props.onNameUpdated();
   };
 
   return (
     <>
       <label>Update name: </label>
-      <input value={editingName} onChange={onChange} />
+      <input value={props.editingName} onChange={onChange} />
       <button onClick={onNameSubmit}>Change</button>
     </>
   );
