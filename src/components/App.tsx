@@ -1,15 +1,21 @@
 import React from "react";
+import { useState } from "react";
 import HelloComponent from "./HelloComponent";
+import NameEdit from "./NameEdit";
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>React Typescript App</h1>
-        <HelloComponent username="John" />
-      </div>
-    );
-  }
-}
+const App = () => {
+  const [name, setName] = useState("defaultName");
+
+  const setUsernameState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  return (
+    <div>
+      <HelloComponent username={name} />
+      <NameEdit username={name} onChange={setUsernameState} />
+    </div>
+  );
+};
 
 export default App;
