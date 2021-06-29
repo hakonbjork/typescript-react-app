@@ -3,12 +3,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import HelloComponent from "./HelloComponent";
 import NameEdit from "./NameEdit";
+import ColorBrowser from "./ColorBrowser";
+import Color from "../model/color";
+import ColorPicker from "./ColorPicker";
 
 const App = () => {
   const [name, setName] = useState("defaultUserName");
   const [editingName, setEditingName] = useState("defaultUserName");
   const [errorMessage, setErrorMessage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [color, setColor] = useState<Color>({ red: 20, green: 40, blue: 180 });
 
   const setUsernameState = () => {
     setName(editingName);
@@ -39,6 +43,8 @@ const App = () => {
 
   return (
     <div>
+      <ColorBrowser color={color} />
+      <ColorPicker color={color} onColorUpdated={setColor} />
       <HelloComponent username={name} />
       <NameEdit
         initialUsername={name}
