@@ -1,24 +1,27 @@
 import MemberEntity from "../model/members";
+import axios, { AxiosResponse } from "axios";
 
-// fake api
+const gitHubURL = "http://api.github.com";
+const gitHubMembersUrl = `${gitHubURL}/orgs/lemoncode/members`;
+
+const mapMemberListApiToModel = ({
+  data,
+}: AxiosResponse<any[]>): MemberEntity[] =>
+  data.map((githubMember) => ({
+    id: githubMember.id,
+    login: githubMember.login,
+    avatar_url: githubMember.avatar_url,
+  }));
+
 const getMembersCollection = (): Promise<MemberEntity[]> => {
   const promise = new Promise<MemberEntity[]>((resolve, reject) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1457912,
-            login: "brauliodiez",
-            avatar_url: "https://avatars.githubusercontent.com/u/1457912?v=3",
-          },
-          {
-            id: 4374977,
-            login: "Nasdan",
-            avatar_url: "https://avatars.githubusercontent.com/u/4374977?v=3",
-          },
-        ]),
-      500
-    );
+    try {
+      axios
+        .get<MemberEntity[]>(gitHubMembersUrl)
+        .then((response) => resolve(mapMemberListApiToModel(response)));
+    } catch (ex) {
+      reject(ex);
+    }
   });
 
   return promise;
