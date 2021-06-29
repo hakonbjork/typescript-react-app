@@ -1,4 +1,3 @@
-import React from "react";
 import Color from "../model/color";
 
 interface Props {
@@ -6,53 +5,50 @@ interface Props {
   onColorUpdated: (color: Color) => void;
 }
 
+// keyof color gjør at bare red, green eller blue kan brukes
+const updateColor = (props: Props, colorId: keyof Color) => (value: number) => {
+  props.onColorUpdated({
+    ...props.color, //  lager en klone av current props.color objekt
+    [colorId]: value, // der en property (farge) får en ny verdi
+  });
+};
+
+// Kunne laget en slags loop og mappet her, men gadd ikke
 const ColorPicker = (props: Props) => (
   <div>
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSlider
       value={props.color.red}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: +event.target.value,
-          green: props.color.green,
-          blue: props.color.blue,
-        })
-      }
+      onValueUpdated={updateColor(props, "red")}
     />
-    {props.color.red}
-    <br />
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSlider
       value={props.color.green}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: props.color.red,
-          green: +event.target.value,
-          blue: props.color.blue,
-        })
-      }
+      onValueUpdated={updateColor(props, "green")}
     />
-    {props.color.green}
-    <br />
-    <input
-      type="range"
-      min="0"
-      max="255"
+    <ColorSlider
       value={props.color.blue}
-      onChange={(event) =>
-        props.onColorUpdated({
-          red: props.color.red,
-          green: props.color.green,
-          blue: +event.target.value,
-        })
-      }
+      onValueUpdated={updateColor(props, "blue")}
     />
-    {props.color.blue}
   </div>
 );
+
+interface PropsColorSlider {
+  value: number;
+  onValueUpdated: (newValue: number) => void;
+}
+
+const ColorSlider = (props: PropsColorSlider) => {
+  return (
+    <div>
+      <input
+        type="range"
+        min="0"
+        max="255"
+        value={props.value}
+        onChange={(event) => props.onValueUpdated(+event.target.value)}
+      />
+      {props.value}
+    </div>
+  );
+};
 
 export default ColorPicker;
