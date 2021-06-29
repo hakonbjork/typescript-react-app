@@ -7,6 +7,7 @@ import ColorBrowser from "./ColorBrowser";
 import Color from "../model/color";
 import ColorPicker from "./ColorPicker";
 import Sidebar from "./Sidebar";
+import MemberTable from "./MemberTableComp";
 
 const App = () => {
   const [name, setName] = useState("defaultUserName");
@@ -61,6 +62,7 @@ const App = () => {
           </li>
         </ul>
       </Sidebar>
+      <MemberTable />
       <ColorBrowser color={color} />
       <ColorPicker color={color} onColorUpdated={setColor} />
       <HelloComponent username={name} />
